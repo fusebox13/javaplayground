@@ -1,0 +1,22 @@
+#Spring Configuration
+spring:
+  profiles:
+    active: "dev"
+  main:
+    banner-mode: "off"
+---
+spring:
+  profiles: "dev"
+  cache:
+    type: "redis"
+  redis:
+    host: localhost
+    port: 6379
+---
+spring:
+  profiles: "prod"
+  cache:
+    type: "redis"
+  redis:
+    host: localhost
+    port: 6379
