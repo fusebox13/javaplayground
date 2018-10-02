@@ -22,11 +22,13 @@ public class XfdfToPdfTest {
 
         File dest = ResourceUtils.getFile("classpath:static");
         String DEST_URI = dest.getAbsolutePath() + "\\generatedPDF.pdf";
+        String TABLE_DEST_URI = dest.getAbsolutePath() + "\\table.pdf";
         System.out.println(xfdf.getAbsolutePath());
         System.out.println(pdfSrc.getAbsolutePath());
         System.out.println(DEST_URI);
 
         XfdfToPdf.fillPdf(pdfSrc.getAbsolutePath(), xfdf.getAbsolutePath(), DEST_URI);
+        XfdfToPdf.createTablePDF(TABLE_DEST_URI);
     }
 
 }

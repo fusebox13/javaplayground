@@ -1,12 +1,9 @@
 package com.fuseworks.labs.playground.pdfpoc;
 
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.XfdfReader;
-
-import java.io.FileInputStream;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -15,6 +12,7 @@ public class XfdfToPdf {
     protected static void fillPdf(String SRC, String XFDF, String DEST) throws IOException, DocumentException {
         XfdfReader xfdfReader = new XfdfReader(XFDF);
 
+
         PdfReader pdfReader = new PdfReader(SRC);
 
         FileOutputStream pdfos = new FileOutputStream(DEST);
@@ -22,11 +20,39 @@ public class XfdfToPdf {
         PdfStamper stamper = new PdfStamper(pdfReader, pdfos);
 
         AcroFields fields = stamper.getAcroFields();
+        fields.getFields();
 
         fields.setFields(xfdfReader);
+        fields.setField("Submitted by", "Dan the greatest ever!!");
 
         stamper.setFormFlattening(true);
         stamper.close();
         pdfReader.close();
+    }
+
+    protected static void createTablePDF(String DEST) throws IOException, DocumentException {
+        Document document = new Document(PageSize.LETTER);
+
+        PdfWriter.getInstance(document, new FileOutputStream(DEST));
+
+        document.open();
+
+        PdfPTable table = new PdfPTable(5);
+        table.setHeaderRows(1);
+        table.setSplitRows(false);
+        table.setComplete(false);
+
+        for (int i = 0; i < 5; i++) {table.addCell("Header " + i);}
+
+        for (int i = 0; i < 1000; i++) {
+            if (i%5 == 0) {
+                document.add(table);
+            }
+            table.addCell("Test " + i);
+        }
+
+        table.setComplete(true);
+        document.add(table);
+        document.close();
     }
 }
