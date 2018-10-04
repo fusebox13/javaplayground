@@ -1,19 +1,22 @@
 package com.fuseworks.labs.playground.pdfpoc;
 
 import com.lowagie.text.DocumentException;
-import org.junit.Test;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+@Service
+public class PdfService {
 
-public class XfdfToPdfTest {
+    XfdfToPdf pdfGenerator;
 
-    @Test
-    public void createPdfTest() throws IOException, DocumentException {
+    public PdfService(XfdfToPdf pdfGenerator) {
+        this.pdfGenerator = pdfGenerator;
+    }
+
+    public byte[] getPdf() throws IOException, DocumentException {
         File xfdf = ResourceUtils
                 .getFile("classpath:static/data.xfdf");
 
@@ -23,14 +26,10 @@ public class XfdfToPdfTest {
         File dest = ResourceUtils.getFile("classpath:static");
         String DEST_URI = dest.getAbsolutePath() + "/generatedPDF.pdf";
         String TABLE_DEST_URI = dest.getAbsolutePath() + "/table.pdf";
-        System.out.println(xfdf.getAbsolutePath());
-        System.out.println(pdfSrc.getAbsolutePath());
-        System.out.println(DEST_URI);
 
         XfdfToPdf.fillPdf(pdfSrc.getAbsolutePath(), xfdf.getAbsolutePath(), DEST_URI);
-        XfdfToPdf.createTablePDF(TABLE_DEST_URI);
-        byte[] destBytes = XfdfToPdf.convertFileToByteArray(DEST_URI);
-        byte[] tableDestBytes = XfdfToPdf.convertFileToByteArray(TABLE_DEST_URI);
-    }
+        byte[] pdfByteArr = XfdfToPdf.convertFileToByteArray(DEST_URI);
 
+        return pdfByteArr;
+    }
 }

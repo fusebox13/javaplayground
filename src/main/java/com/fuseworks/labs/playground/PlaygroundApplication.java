@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
 @SpringBootApplication
-public class PlaygroundApplication implements CommandLineRunner {
+public class PlaygroundApplication {
 
 	@Autowired
 	EndlessServiceImpl endlessService;
@@ -22,11 +22,5 @@ public class PlaygroundApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PlaygroundApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		List<Photo> photos = endlessService.getPhotos();
-		repository.save(photos);
 	}
 }

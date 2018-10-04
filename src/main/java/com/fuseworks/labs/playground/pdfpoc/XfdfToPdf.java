@@ -4,9 +4,13 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.*;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.springframework.stereotype.Component;
 
+import java.io.*;
+
+import static jdk.nashorn.internal.objects.Global.println;
+
+@Component
 public class XfdfToPdf {
 
     protected static void fillPdf(String SRC, String XFDF, String DEST) throws IOException, DocumentException {
@@ -54,5 +58,22 @@ public class XfdfToPdf {
         table.setComplete(true);
         document.add(table);
         document.close();
+    }
+
+    protected static byte[] convertFileToByteArray(String src) throws FileNotFoundException {
+        FileInputStream fis = new FileInputStream(src);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        try {
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum); //no doubt here is 0
+                //Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
+                System.out.println("read " + readNum + " bytes,");
+            }
+        } catch (IOException ex) {
+            println(ex.getStackTrace());
+            println(ex.getMessage());
+        }
+        return bos.toByteArray();
     }
 }
